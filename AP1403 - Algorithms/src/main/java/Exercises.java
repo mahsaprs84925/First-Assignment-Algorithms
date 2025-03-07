@@ -9,8 +9,15 @@ public class Exercises {
         note: you should return the indices in ascending order and every array's solution is unique
     */
     public int[] productIndices(int[] values, int target) {
-        // todo
-        return null;
+        for(int i = 0; i < values.length; i++) //first index
+            {
+                for(int j = i+1; j <values.length; j++) //second index
+                {
+                    if(values[i] * values[j] == target)// return indices
+                        return new int[]{i, j};
+                }
+            }
+            return null;
     }
 
     /*
@@ -24,9 +31,42 @@ public class Exercises {
 
         so you should walk in that matrix in a curl and then add the numbers in order you've seen them in a 1D array
     */
-    public int[] spiralTraversal(int[][] values, int rows, int cols) {
-        // todo
-        return null;
+    public int[] spiralTraversal(int[][] values, int rows, int cols)
+    {
+        int[] result = new int[rows * cols];
+        int index = 0;
+        int top = 0, bottom = rows - 1;
+        int left = 0, right = cols - 1;
+        while (top <= bottom && left <= right)
+        {
+            //left to right
+            for (int i = left; i <= right; i++)
+                result[index++] = values[top][i];
+            top++;
+
+            //top to bottom
+            for (int i = top; i <= bottom; i++)
+                result[index++] = values[i][right];
+            right--;
+
+            //left to right
+            if (top <= bottom)
+            {
+                for (int i = right; i >= left; i--)
+                    result[index++] = values[bottom][i];
+                bottom--;
+            }
+
+            //bottom to top
+            if (left <= right)
+            {
+                for (int i = bottom; i >= top; i--)
+                    result[index++] = values[i][left];
+                left++;
+            }
+        }
+
+        return result;
     }
 
     /*
