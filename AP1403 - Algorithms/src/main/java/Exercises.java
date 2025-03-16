@@ -1,4 +1,8 @@
-public class Exercises {
+import java.util.List;
+import java.util.ArrayList;
+
+public class Exercises
+{
 
     /*
         there is an array of positive integers as input of function and another integer for the target value
@@ -8,8 +12,16 @@ public class Exercises {
 
         note: you should return the indices in ascending order and every array's solution is unique
     */
-    public int[] productIndices(int[] values, int target) {
-        // todo
+    public int[] productIndices(int[] values, int target)
+    {
+        for (int i = 0; i < values.length; i++) //first index
+        {
+            for (int j = i + 1; j < values.length; j++) //second index
+            {
+                if (values[i] * values[j] == target)// return indices
+                    return new int[]{i, j};
+            }
+        }
         return null;
     }
 
@@ -25,8 +37,36 @@ public class Exercises {
         so you should walk in that matrix in a curl and then add the numbers in order you've seen them in a 1D array
     */
     public int[] spiralTraversal(int[][] values, int rows, int cols) {
-        // todo
-        return null;
+        int[] result = new int[rows * cols];
+        int index = 0;
+        int top = 0, bottom = rows - 1;
+        int left = 0, right = cols - 1;
+        while (top <= bottom && left <= right) {
+            //left to right
+            for (int i = left; i <= right; i++)
+                result[index++] = values[top][i];
+            top++;
+
+            //top to bottom
+            for (int i = top; i <= bottom; i++)
+                result[index++] = values[i][right];
+            right--;
+
+            //left to right
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--)
+                    result[index++] = values[bottom][i];
+                bottom--;
+            }
+
+            //bottom to top
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--)
+                    result[index++] = values[i][left];
+                left++;
+            }
+        }
+        return result;
     }
 
     /*
@@ -53,12 +93,46 @@ public class Exercises {
 
         if you're familiar with lists and arraylists, you can also edit method's body to use them instead of array
     */
-    public int[][] intPartitions(int n) {
-        // todo
-        return null;
-    }
+        // Main function to generate integer partitions
+        public int[][] intPartitions(int n)
+        {
+            List<List<Integer>> result = new ArrayList<>();
 
-    public static void main(String[] args) {
+            partitionGeneration(n, n, new ArrayList<>(), result);
+
+            // Convert the list of lists to an array
+            int[][] finalResult = new int[result.size()][];
+            for (int i = 0; i < result.size(); i++)
+            {
+                finalResult[i] = new int[result.get(i).size()];
+                for (int j = 0; j < result.get(i).size(); j++)
+                {
+                    finalResult[i][j] = result.get(i).get(j);
+                }
+            }
+            return finalResult;
+        }
+
+        // Recursive function for partition generation
+        private void partitionGeneration(int n, int max, List<Integer> current, List<List<Integer>> result)
+        {
+            if (n == 0)
+            {
+                result.add(new ArrayList<>(current)); // Add the current partition to the result
+                return;
+            }
+
+            // Iterate from max to 1 to generate unique partitions
+            for (int i = Math.min(max, n); i >= 1; i--)
+            {
+                current.add(i);
+                partitionGeneration(n - i, i, current, result);
+                current.remove(current.size() - 1);
+            }
+        }
+
+    public static void main(String[] args)
+    {
         // you can test your code here
     }
 }
